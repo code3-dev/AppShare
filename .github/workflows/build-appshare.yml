@@ -43,12 +43,12 @@ jobs:
       - name: Build APK
         run: |
           chmod +x ./gradlew
-          ./gradlew assembleRelease
+          ./gradlew assembleRelease --stacktrace
 
       - name: Rename APK
         run: |
           mkdir -p release
-          cp app/build/outputs/apk/release/app-release.apk release/AppShare-universal.apk
+          cp app/build/outputs/apk/release/app-universal-release.apk release/AppShare-universal.apk
 
       - name: Get tag name
         id: get_tag
