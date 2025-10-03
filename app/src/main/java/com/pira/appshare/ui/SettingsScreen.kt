@@ -242,7 +242,7 @@ fun SettingsScreen(
                     .fillMaxWidth()
                     .clickable {
                         try {
-                            context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("mailto:h3dev.pira@mail.com")))
+                            context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("mailto:h3dev.pira@gmail.com")))
                         } catch (e: Exception) {
                             // Handle error if needed
                         }
