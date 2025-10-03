@@ -39,11 +39,11 @@ AppShare is an Android application that allows you to view installed application
    ```bash
    ./gradlew assembleRelease
    ```
-4. Install the APK from `app/build/outputs/apk/debug/`
+4. Install the APK from `app/build/outputs/apk/release/`
 
 ## Requirements
 
-- Android 8.0 (API level 26) or higher
+- Android 7.0 (API level 24) or higher
 - Minimum 50MB free storage space
 
 ## Permissions
