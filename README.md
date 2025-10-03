@@ -15,7 +15,7 @@ AppShare is an Android application that allows you to view installed application
 ## Screenshots
 
 <div style="display:flex; flex-wrap:wrap; gap:10px;">
-  <img src="screenshots/app_list.png" alt="App List" width="200"/>
+  <img src="screenshots/main.png" alt="App List" width="200"/>
   <img src="screenshots/search.png" alt="Search" width="200"/>
   <img src="screenshots/settings.png" alt="Settings" width="200"/>
   <img src="screenshots/dark_mode.png" alt="Dark Mode" width="200"/>
