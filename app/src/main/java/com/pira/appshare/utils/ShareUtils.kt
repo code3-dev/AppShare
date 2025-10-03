@@ -29,7 +29,7 @@ object ShareUtils {
                 
                 val sourceApk = File(applicationInfo.sourceDir)
                 
-                // Create a temporary file to copy the APK to
+                // Create a temporary file to copy the APK to (in cache dir)
                 val tempDir = File(context.cacheDir, "apks")
                 if (!tempDir.exists()) {
                     tempDir.mkdirs()
@@ -73,5 +73,46 @@ object ShareUtils {
                 }
             }
         }
+    }
+    
+    /**
+     * Clear all cached APK files
+     */
+    fun clearCache(context: Context) {
+        try {
+            val tempDir = File(context.cacheDir, "apks")
+            if (tempDir.exists()) {
+                tempDir.deleteRecursively()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+    
+    /**
+     * Get the size of cached APK files
+     */
+    fun getCacheSize(context: Context): Long {
+        val tempDir = File(context.cacheDir, "apks")
+        return if (tempDir.exists()) {
+            getDirectorySize(tempDir)
+        } else {
+            0L
+        }
+    }
+    
+    /**
+     * Helper function to calculate directory size
+     */
+    private fun getDirectorySize(directory: File): Long {
+        var size = 0L
+        directory.listFiles()?.forEach { file ->
+            size += if (file.isDirectory) {
+                getDirectorySize(file)
+            } else {
+                file.length()
+            }
+        }
+        return size
     }
 }

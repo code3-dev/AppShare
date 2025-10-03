@@ -2,16 +2,21 @@ package com.pira.appshare.ui
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -34,6 +39,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.pira.appshare.utils.ShareUtils
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -50,7 +56,13 @@ fun SettingsScreen(
     var selectedTheme by remember { mutableStateOf(currentTheme) }
     var showExitDialog by remember { mutableStateOf(false) }
     var showSystemAppsState by remember { mutableStateOf(showSystemApps) }
+    var showClearCacheDialog by remember { mutableStateOf(false) }
     val context = LocalContext.current
+    var cacheSize by remember { mutableStateOf(ShareUtils.getCacheSize(context)) }
+    val scrollState = rememberScrollState()
+
+    // Update cache size when screen is composed
+    cacheSize = ShareUtils.getCacheSize(context)
 
     // Handle back button press
     BackHandler {
@@ -82,6 +94,32 @@ fun SettingsScreen(
         )
     }
 
+    if (showClearCacheDialog) {
+        AlertDialog(
+            onDismissRequest = { showClearCacheDialog = false },
+            title = { Text("Clear Cache") },
+            text = { Text("Are you sure you want to clear the app cache? This will remove all temporarily stored APK files.") },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        ShareUtils.clearCache(context)
+                        cacheSize = 0
+                        showClearCacheDialog = false
+                    }
+                ) {
+                    Text("Clear")
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = { showClearCacheDialog = false }
+                ) {
+                    Text("Cancel")
+                }
+            }
+        )
+    }
+
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
@@ -103,6 +141,7 @@ fun SettingsScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
+                .verticalScroll(scrollState)
         ) {
             // Theme Selection
             Text(
@@ -199,6 +238,18 @@ fun SettingsScreen(
                     .fillMaxWidth()
             )
             
+            // Clear Cache
+            ListItem(
+                headlineContent = { Text("Clear Cache") },
+                supportingContent = { Text(formatFileSize(cacheSize)) },
+                leadingContent = { Icon(Icons.Default.Delete, contentDescription = null) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        showClearCacheDialog = true
+                    }
+            )
+            
             // About Section
             Text(
                 text = "About",
@@ -211,7 +262,7 @@ fun SettingsScreen(
             ListItem(
                 headlineContent = { Text("App Share") },
                 leadingContent = { Icon(Icons.Default.Settings, contentDescription = null) },
-                supportingContent = { Text("Version 1.0.0") },
+                supportingContent = { Text("Version 1.0.1\nABI: ${Build.SUPPORTED_ABIS.firstOrNull() ?: "Unknown"}") },
                 modifier = Modifier.fillMaxWidth()
             )
             
@@ -223,7 +274,7 @@ fun SettingsScreen(
             // Developer Links
             ListItem(
                 headlineContent = { Text("Telegram") },
-                leadingContent = { Icon(Icons.Default.Email, contentDescription = null) },
+                leadingContent = { Icon(Icons.Default.Send, contentDescription = null) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable {
@@ -242,7 +293,7 @@ fun SettingsScreen(
                     .fillMaxWidth()
                     .clickable {
                         try {
-                            context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("mailto:h3dev.pira@mail.com")))
+                            context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("mailto:h3dev.pira@gmail.com")))
                         } catch (e: Exception) {
                             // Handle error if needed
                         }
@@ -260,5 +311,21 @@ fun SettingsScreen(
                     }
             )
         }
+    }
+}
+
+/**
+ * Format file size in human-readable format
+ */
+fun formatFileSize(size: Long): String {
+    val kb = 1024.0
+    val mb = kb * 1024
+    val gb = mb * 1024
+
+    return when {
+        size >= gb -> String.format("%.2f GB", size / gb)
+        size >= mb -> String.format("%.2f MB", size / mb)
+        size >= kb -> String.format("%.2f KB", size / kb)
+        else -> "$size B"
     }
 }

@@ -11,6 +11,9 @@ AppShare is an Android application that allows you to view installed application
 - ⚙️ Settings page with customization options
 - 🛠 Show/hide system applications
 - 📞 Developer contact information
+- 📋 Display device ABI architecture information in settings
+- 🖱 Improved UI with better icons for social links
+- 🗑 Clear cache functionality to remove temporary APK files
 
 ## Screenshots
 
@@ -39,11 +42,11 @@ AppShare is an Android application that allows you to view installed application
    ```bash
    ./gradlew assembleRelease
    ```
-4. Install the APK from `app/build/outputs/apk/debug/`
+4. Install the APK from `app/build/outputs/apk/release/`
 
 ## Requirements
 
-- Android 8.0 (API level 26) or higher
+- Android 7.0 (API level 24) or higher
 - Minimum 50MB free storage space
 
 ## Permissions
@@ -86,6 +89,13 @@ The project uses GitHub Actions for CI/CD:
 - Email: [h3dev.pira@mail.com](mailto:h3dev.pira@mail.com)
 
 ## Changelog
+
+### v1.0.1
+- Added device ABI architecture information display in settings about section
+- Improved settings page scrolling functionality
+- Enhanced Telegram icon in settings for better UX
+- Fixed settings page layout to ensure all options are accessible
+- Added clear cache functionality to remove temporary APK files
 
 ### v1.0.0
 - Initial release

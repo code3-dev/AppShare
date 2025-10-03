@@ -16,7 +16,6 @@ For the purposes of this Privacy Policy:
 
 - __Application__ means the software program provided by the Company downloaded by You on any electronic device, named AppShare
 - __Company__ (referred to as either "the Company", "We", "Us" or "Our" in this Agreement) refers to AppShare.
-- __Country__ refers to: Iran
 - __Device__ means any device that can access the Service such as a computer, a cellphone or a digital tablet.
 - __Personal Data__ is any information that relates to an identified or identifiable individual.
 - __Service__ refers to the Application.
