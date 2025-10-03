@@ -1,3 +1,6 @@
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -10,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId = "com.pira.appshare"
-        minSdk = 26
+        minSdk = 24
         targetSdk = 36
         versionCode = 1
         versionName = "1.0.0"
@@ -21,9 +24,9 @@ android {
     signingConfigs {
         create("release") {
             val keystorePropertiesFile = rootProject.file("key.properties")
-            val keystoreProperties = java.util.Properties()
+            val keystoreProperties = Properties()
             if (keystorePropertiesFile.exists()) {
-                keystoreProperties.load(java.io.FileInputStream(keystorePropertiesFile))
+                keystoreProperties.load(FileInputStream(keystorePropertiesFile))
             }
             
             keyAlias = keystoreProperties.getProperty("keyAlias") ?: ""

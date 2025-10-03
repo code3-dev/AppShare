@@ -30,6 +30,7 @@ jobs:
       - name: Decode Keystore
         run: |
           echo "${{ secrets.KEY_STORE }}" | base64 --decode > app/keystore.jks
+        continue-on-error: true
 
       - name: Create keystore properties file
         run: |
@@ -37,6 +38,7 @@ jobs:
           echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> key.properties
           echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> key.properties
           echo "storeFile=keystore.jks" >> key.properties
+        continue-on-error: true
 
       - name: Build APK
         run: |
@@ -46,7 +48,7 @@ jobs:
       - name: Rename APK
         run: |
           mkdir -p release
-          cp app/build/outputs/apk/release/app-universal-release.apk release/AppShare-universal.apk
+          cp app/build/outputs/apk/release/app-release.apk release/AppShare-universal.apk
 
       - name: Get tag name
         id: get_tag
